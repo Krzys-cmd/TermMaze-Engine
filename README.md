@@ -1,62 +1,60 @@
 <h3 align="center">TermMaze-Engine</h3>
 
 <p align="center">
-  Lekki, konsolowy silnik generatora i solvera labiryntów napisany w <b>C++17</b>. Wykorzystuje kody sterujące <b>ANSI</b> do płynnego renderowania bez migotania oraz klasyczne algorytmy grafowe (<b>DFS</b> i <b>BFS</b>) do tworzenia i rozwiązywania struktur w czasie rzeczywistym.
+A lightweight, console-based maze generator and solver engine written in <b>C++17</b>. It utilizes <b>ANSI</b> escape codes for smooth, flicker-free rendering and classical graph algorithms (<b>DFS</b> and <b>BFS</b>) to generate and solve structures in real time.
 </p>
 
-##  Główne funkcje
+## Key Features
 
-| Funkcja | Opis |
+| Feature | Description |
 |---|---|
-| **Generowanie Labiryntu (DFS)** | Silnik wykorzystuje zoptymalizowany algorytm Depth-First Search z stosem (`std::stack`) oraz generatorem Mersenne Twister (`std::mt19937`). |
-| **Rozwiązywanie (BFS)** | Implementacja algorytmu Breadth-First Search na kolejce (`std::queue`) gwarantuje znalezienie matematycznie najkrótszej ścieżki do celu. |
-| **Płynne UI w Terminalu** | Rysowanie siatki z użyciem bezpośredniego pozycjonowania kursora ANSI (`\033[H`) eliminuje migotanie (brak `cls` / `system("cls")`). |
-| **Animacja w Czasie Rzeczywistym** | Wszystkie kroki generacji i poszukiwań ścieżki są animowane na żywo z precyzyjną kontrolą opóźnień (`std::this_thread::sleep_for`). |
-| **Stylizowanie ANSI RGB** | Odpowiednie dobranie sekwencji ANSI pozwala renderować szare ściany w przestrzeni RGB (`\033[48;2;160;160;160m`), turkusową falę eksploracji oraz zieloną trasę końcową. |
+| **Maze Generation (DFS)** | The engine utilizes an optimized Depth-First Search algorithm with a explicit stack (`std::stack`) and a Mersenne Twister generator (`std::mt19937`). |
+| **Pathfinding (BFS)** | Implementation of the Breadth-First Search algorithm using a queue (`std::queue`) guarantees finding the mathematically shortest path to the goal. |
+| **Smooth Terminal UI** | Grid rendering via direct ANSI cursor positioning (`\033[H`) eliminates screen flickering (no `cls` / `system("cls")`). |
+| **Real-Time Animation** | All steps of generation and pathfinding are animated live with precise delay control (`std::this_thread::sleep_for`). |
+| **ANSI RGB Styling** | Carefully selected ANSI sequences allow rendering gray walls in RGB space (`\033[48;2;160;160;160m`), a cyan wave for exploration, and a green final route. |
 
 
-##  Przepływ Działania
+## Workflow
 
-| Etap | Opis działania |
+| Stage | Operational Description |
 | :---: | :--- |
-| **Inicjalizacja** | Ukrycie kursora terminala (`\033[?25l`) oraz przygotowanie pełnej siatki ścian o wymiarach $25 \times 25$. |
-| **Generacja** | Dynamiczne drążenie korytarzy z punktu $(1,1)$ z podglądem animacji na żywo. |
-| **Pauza** | 3-sekundowe wstrzymanie po ukończeniu generowania pełnej struktury. |
-| **Rozwiązywanie** | Eksploracja przestrzeni algorytmem BFS, a następnie rekonstrukcja i podświetlenie najkrótszej drogi do mety $(23, 23)$. |
-
+| **Initialization** | Hiding the terminal cursor (`\033[?25l`) and initializing a full wall grid with dimensions of $25 \times 25$. |
+| **Generation** | Dynamic carving of passages starting from point $(1,1)$ with a live animation preview. |
+| **Pause** | A 3-second pause upon completing the generation of the full structure. |
+| **Solving** | Space exploration via the BFS algorithm, followed by reconstruction and highlighting of the shortest path to destination $(23, 23)$. |
 ---
 
-##  Architektura i Logika Projektu
+## Architecture and Project Logic
 
-Projekt prezentuje praktyczne zastosowanie teorii grafów w środowisku konsolowym bez użycia zewnętrznych bibliotek graficznych.
+This project demonstrates a practical application of graph theory in a console environment without using external graphics libraries.
 
-###  Algorytm Generowania (Recursive Backtracker / DFS)
-Generowanie labiryntu polega na losowym przeszukiwaniu grafu w głąb za pomocą stosu. Użycie struktury `std::stack` zapobiega przepełnieniu stosu wywołań (stack overflow) właściwemu dla czystej rekurencji:
-* **Przeskok o 2 komórki:** Generator szuka nieodwiedzonych sąsiadów odległych o $2$ punkty w kierunkach góra/dół/lewo/prawo ($dx \in \{2, -2, 0, 0\}$, $dy \in \{0, 0, 2, -2\}$).
-* **Usuwanie ścian:** Po wylosowaniu kierunku z użyciem `std::uniform_int_distribution`, silnik zamienia w ścieżkę (`PATH`) zarówno komórkę docelową, jak i komórkę pośrednią:
-  $$\text{punkt}_{\text{sciana}} = \left(x + \frac{dirX}{2}, y + \frac{dirY}{2}\right)$$
-* **Cofanie (Backtracking):** Gdy brak poprawnych sąsiadów, silnik zdejmuje element ze stosu (`s.pop()`) i cofa się do wcześniejszego rozgałęzienia.
+### Generation Algorithm (Recursive Backtracker / DFS)
+Maze generation relies on a randomized depth-first search of a graph using a stack. The use of `std::stack` prevents stack overflow issues inherent to pure recursion:
+* **2-Cell Jump:** The generator looks for unvisited neighbors at a distance of $2$ units in up/down/left/right directions ($dx \in \{2, -2, 0, 0\}$, $dy \in \{0, 0, 2, -2\}$).
+* **Wall Removal:** After choosing a random direction using `std::uniform_int_distribution`, the engine transforms both the destination cell and the intermediate cell into a path (`PATH`):
+  $$\text{point}_{\text{wall}} = \left(x + \frac{dirX}{2}, y + \frac{dirY}{2}\right)$$
+* **Backtracking:** When no valid neighbors remain, the engine pops the element from the stack (`s.pop()`) and backtracks to a previous junction.
 
-###  Algorytm Rozwiązywania (Breadth-First Search)
-Poszukiwanie ścieżki wykorzystuje przeszukiwanie wszerz, co zapewnia optymalność znalezionej drogi w grafie nieważonym:
-* **Fala BFS:** Kolejka `std::queue<punkt>` przetwarza kolejne węzły. Każde odwiedzone pole zostaje tymczasowo oznaczone znakiem `.` (renderowane jako błękitny blok ANSI) oraz zapisuje swojego poprzednika w tablicy `rodzic[y][x]`.
-* **Rekonstrukcja ścieżki:** Po osiągnięciu punktu docelowego silnik pętlą `while` przechodzi od mety do startu po wskaźnikach z tablicy `rodzic`:
-  $$\text{teraz} = \text{rodzic}[\text{teraz}.y][\text{teraz}.x]$$
-  Podmienia przy tym komórki na znak `ROUTE` (`*`), co powoduje ich podświetlenie na kolor zielony.
-
-###  Renderowanie i Sekwencje Sterujące ANSI
-Wykorzystanie standardowych kodów sterujących terminala zapewnia szybkie i estetyczne odświeżanie:
-* **Pozycjonowanie kursora:** `\033[H` przestawia kursor w lewy górny róg okna zamiast czyszczenia bufora, eliminując klatkowanie.
-* **Formatowanie tła:** 
-  * Ściana (`WALL`): `\033[48;2;160;160;160m  \033[0m` (szary kolor w trybie RGB 24-bit).
-  * Odwiedzone (`.`): `\033[46m  \033[0m` (cyan tło).
-  * Najkrótsza droga (`ROUTE`): `\033[42m  \033[0m` (zielone tło).
-* **Ukrywanie kursora:** `\033[?25l` wyłącza widoczność migającego kursora na czas działania programu.
-
+### Solving Algorithm (Breadth-First Search)
+Pathfinding employs breadth-first search, which guarantees path optimality in an unweighted graph:
+* **BFS Wave:** A `std::queue<point>` processes upcoming nodes. Each visited cell is temporarily marked with a `.` character (rendered as a cyan ANSI block) and records its predecessor in the `parent[y][x]` array.
+* **Path Reconstruction:** Upon reaching the target destination, the engine uses a `while` loop to backtrack from target to start using indices from the `parent` array:
+  $$\text{current} = \text{parent}[\text{current}.y][\text{current}.x]$$
+  During this process, it updates cells to the `ROUTE` character (`*`), highlighting them in green.
+  
+### Rendering and ANSI Control Sequences
+Using standard terminal control sequences ensures fast and clean rendering:
+* **Cursor Positioning:** `\033[H` moves the cursor to the top-left corner instead of clearing the frame buffer, eliminating screen tearing.
+* **Background Formatting:** 
+  * Wall (`WALL`): `\033[48;2;160;160;160m  \033[0m` (gray color in 24-bit RGB mode).
+  * Visited (`.`): `\033[46m  \033[0m` (cyan background).
+  * Shortest Route (`ROUTE`): `\033[42m  \033[0m` (green background).
+* **Cursor Hiding:** `\033[?25l` disables the blinking cursor during program execution.
 ---
 
-##  Struktura Klas
+## Class Structure
 
-* **`plansza`**: Reprezentuje siatkę dwuwymiarową (`std::vector<std::vector<char>>`). Przechowuje stan komórek, odpowiada za bezpieczny dostęp (`isValid`, `getCell`, `setCell`) oraz za właściwy proces renderowania klastrów ANSI.
-* **`generujLab`**: Moduł odpowiedzialny za budowanie labiryntu. Operuje na referencji do obiektu `plansza`, implementując generator losowy i pętlę nawrotów.
-* **`RozwiazLab`**: Autonomiczny solver wykonujący algorytm BFS. Odpowiada za animację fali przeszukiwania, czyszczenie śladów oraz finalne wyznaczenie optymalnej trasy.
+* **`Board`**: Represents the 2D grid (`std::vector<std::vector<char>>`). Stores cell state, handles safe access (`isValid`, `getCell`, `setCell`), and manages ANSI cluster rendering.
+* **`MazeGenerator`**: Module responsible for building the maze. Operates on a reference to the `Board` object, implementing the random generator and backtracking loop.
+* **`MazeSolver`**: Autonomous solver executing the BFS algorithm. Handles exploration wave animation, trace cleanup, and final optimal route reconstruction.
