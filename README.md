@@ -1,7 +1,7 @@
 <h3 align="center">TermMaze-Engine</h3>
 
 <p align="center">
-A lightweight, console-based maze generator and solver engine written in <b>C++17</b>. It utilizes <b>ANSI</b> escape codes for smooth, flicker-free rendering and classical graph algorithms (<b>DFS</b> and <b>BFS</b>) to generate and solve structures in real time.
+A lightweight, console-based maze generator and solver engine written in <b>C++23</b>. It utilizes <b>ANSI</b> escape codes for smooth, flicker-free rendering and classical graph algorithms (<b>DFS</b> and <b>BFS</b>) to generate and solve structures in real time.
 </p>
 
 ## Key Features
