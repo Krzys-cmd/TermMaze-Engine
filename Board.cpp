@@ -1,4 +1,4 @@
-#include "plansza.h"
+#include "Board.h"
 
 #include<iostream>
 Board::Board(int x, int y) : boardWidth(x), boardHeight(y) {}
