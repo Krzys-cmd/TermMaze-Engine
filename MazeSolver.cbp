@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Labirynt" />
+		<Option title="Maze" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/projektPociag" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/Maze" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -16,7 +16,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/projektPociag" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/Maze" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -32,17 +32,17 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="generujLab.cpp" />
-		<Unit filename="generujLab.h">
+		<Unit filename="GenerateLab.cpp" />
+		<Unit filename="GenerateLab.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="main.cpp" />
-		<Unit filename="plansza.cpp" />
-		<Unit filename="plansza.h">
+		<Unit filename="Board.cpp" />
+		<Unit filename="Board.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="rozwiazLab.cpp" />
-		<Unit filename="rozwiazLab.h">
+		<Unit filename="SolveLab.cpp" />
+		<Unit filename="SolveLab.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Extensions>
