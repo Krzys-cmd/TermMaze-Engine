@@ -1,4 +1,4 @@
-#include "rozwiazLab.h"
+#include "SolveLab.h"
 
 #include <queue>
 #include <vector>

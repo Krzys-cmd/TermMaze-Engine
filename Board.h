@@ -14,9 +14,9 @@ private:
     int boardHeight;
     std::vector<std::vector<char>> grid;
 public:
-    static const char WALL = '#';
-    static const char PATH = ' ';
-    static const char ROUTE = '*';
+    inline static const char WALL = '#';
+    inline static const char PATH = ' ';
+    inline static const char ROUTE = '*';
 
     Board(int x,int y);
 

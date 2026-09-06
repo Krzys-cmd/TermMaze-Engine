@@ -1,7 +1,7 @@
 #pragma once
 
-#include "plansza.h"
-#include "generujLab.h"
+#include "Board.h"
+#include "GenerateLab.h"
 
 class SolveLab{
 private:
