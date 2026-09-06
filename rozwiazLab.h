@@ -3,11 +3,10 @@
 #include "plansza.h"
 #include "generujLab.h"
 
-class RozwiazLab{
+class SolveLab{
 private:
-    plansza& board;
+    Board& board;
 public:
-    RozwiazLab(plansza& b);
-    bool solve(punkt start, punkt koniec);
-
+    SolveLab(Board& b);
+    bool solve(Point start, Point end);
 };

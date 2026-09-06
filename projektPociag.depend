@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1785599953 source:c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\generujlab.cpp
+1788691635 source:c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\generujlab.cpp
 	"generujLab.h"
 	<stack>
 	<chrono>
@@ -13,7 +13,7 @@
 	"generujLab.h"
 	"rozwiazLab.h"
 
-1785600879 source:c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\rozwiazlab.cpp
+1788691739 source:c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\rozwiazlab.cpp
 	"rozwiazLab.h"
 	<queue>
 	<vector>
@@ -21,18 +21,18 @@
 	<thread>
 	<chrono>
 
-1785602067 source:c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\plansza.cpp
+1788691232 source:c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\plansza.cpp
 	"plansza.h"
 	<iostream>
 
-1785597916 c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\plansza.h
+1788691765 c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\plansza.h
 	<vector>
 	<random>
 
-1785593847 c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\generujlab.h
+1788691390 c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\generujlab.h
 	"plansza.h"
 
-1785597437 c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\rozwiazlab.h
+1788691694 c:\users\krzys\onedrive\pulpit\code 2022\projektpociag\rozwiazlab.h
 	"plansza.h"
 	"generujLab.h"
 

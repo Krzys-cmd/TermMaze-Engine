@@ -3,30 +3,30 @@
 #include <vector>
 #include <random>
 
-struct punkt{
-int x;
-int y;
+struct Point{
+    int x;
+    int y;
 };
 
-class plansza{
+class Board{
 private:
-    int wymiarXplanszy;
-    int wymiarYplanszy;
+    int boardWidth;
+    int boardHeight;
     std::vector<std::vector<char>> grid;
 public:
     static const char WALL = '#';
     static const char PATH = ' ';
     static const char ROUTE = '*';
 
-    plansza(int x,int y);
+    Board(int x,int y);
 
-    void czysc();
+    void clear();
     void print();
 
-    bool setCell(int x, int y, char znak);
+    bool setCell(int x, int y, char symbol);
     bool isValid(int x, int y);
     char getCell(int x, int y);
 
-    int getWys();
-    int getSzer();
+    int getHeight();
+    int getWidth();
 };

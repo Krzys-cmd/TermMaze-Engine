@@ -2,11 +2,11 @@
 #include "plansza.h"
 //#include <vector>
 
-class generujLab{
+class GenerateLab{
 private:
-    plansza& board;
+    Board& board;
 public:
-    generujLab(plansza& b);
-    void generator(int startoweX, int startoweY);
-    std::vector<int> getValidSasiad(punkt obecny) const;
+    GenerateLab(Board& b);
+    void generator(int startX, int startY);
+    std::vector<int> getValidNeighbor(Point current) const;
 };

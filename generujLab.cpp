@@ -3,56 +3,56 @@
 #include <chrono>
 #include <thread>
 
-generujLab::generujLab(plansza& b) : board(b) {}
+GenerateLab::GenerateLab(Board& b) : board(b) {}
 
-std::vector<int> generujLab::getValidSasiad(punkt obecny)const{
-   std::vector<int> validSasiad;
+std::vector<int> GenerateLab::getValidNeighbor(Point current)const{
+   std::vector<int> validNeighbor;
    int dx[4] = {2,-2,0,0};
    int dy[4] = {0,0,2,-2};
 
    for(int i = 0; i < 4; i++){
-    int nx = obecny.x + dx[i];
-    int ny = obecny.y + dy[i];
+    int nx = current.x + dx[i];
+    int ny = current.y + dy[i];
 
-    if(board.isValid(nx,ny) && board.getCell(nx, ny) == plansza::WALL){
-        validSasiad.push_back(i);
+    if(board.isValid(nx,ny) && board.getCell(nx, ny) == Board::WALL){
+        validNeighbor.push_back(i);
     }
    }
-return validSasiad;
+return validNeighbor;
 }
 
-void generujLab::generator(int startoweX, int startoweY){
+void GenerateLab::generator(int startX, int startY){
 std::random_device rd;
 std::mt19937 gen(rd());
-std::stack<punkt> s;
+std::stack<Point> s;
 
-punkt start = {startoweX, startoweY};
-board.setCell(start.x, start.y, plansza::PATH);
+Point start = {startX, startY};
+board.setCell(start.x, start.y, Board::PATH);
 s.push(start);
 
 int dx[4] = {2,-2,0,0};
 int dy[4] = {0,0,2,-2};
 
     while(!s.empty()){
-     punkt obecny = s.top();
+     Point current = s.top();
 
-     std::vector<int> sasiad = getValidSasiad(obecny);
+     std::vector<int> neighbor = getValidNeighbor(current);
 
-         if(!sasiad.empty()){
-            std::uniform_int_distribution<int> distrib(0, sasiad.size() - 1);
-            int ranINdex = distrib(gen);
-            int wybranyKierunek = sasiad[ranINdex];
+         if(!neighbor.empty()){
+            std::uniform_int_distribution<int> distrib(0, neighbor.size() - 1);
+            int randomIndex = distrib(gen);
+            int selectedDirection = neighbor[randomIndex];
 
-            int dirX = dx[wybranyKierunek];
-            int dirY = dy[wybranyKierunek];
+            int dirX = dx[selectedDirection];
+            int dirY = dy[selectedDirection];
 
-            punkt scianaPomeidzy = {obecny.x + dirX / 2, obecny.y + dirY / 2};
-            punkt docelowy = {obecny.x + dirX, obecny.y + dirY};
+            Point wallBetween = {current.x + dirX / 2, current.y + dirY / 2};
+            Point target = {current.x + dirX, current.y + dirY};
 
-            board.setCell(scianaPomeidzy.x, scianaPomeidzy.y, plansza::PATH);
-            board.setCell(docelowy.x, docelowy.y, plansza::PATH);
+            board.setCell(wallBetween.x, wallBetween.y, Board::PATH);
+            board.setCell(target.x, target.y, Board::PATH);
 
-            s.push(docelowy);
+            s.push(target);
          }
          else{
             s.pop();

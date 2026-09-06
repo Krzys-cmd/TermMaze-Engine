@@ -8,23 +8,23 @@
 
 int main()
 {
-   std::cout<<"\033[?25l";
+    std::cout<<"\033[?25l";
 
-    const int szer = 25;
-    const int wys = szer;
+    const int width = 25;
+    const int height = width;
 
-    plansza pla(szer,wys);
-    pla.czysc();
+    Board mazeBoard(width, height);
+    mazeBoard.clear();
 
-    generujLab gen(pla);
+    GenerateLab gen(mazeBoard);
     gen.generator(1, 1);
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    RozwiazLab solve(pla);
-    punkt start{1, 1};
-    punkt meta{szer - 2, wys - 2};
+    SolveLab solve(mazeBoard);
+    Point start{1, 1};
+    Point end{width - 2, height - 2};
 
-    solve.solve(start, meta);
+    solve.solve(start, end);
     return 0;
 }

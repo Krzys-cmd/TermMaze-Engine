@@ -1,24 +1,24 @@
 #include "plansza.h"
 
 #include<iostream>
-plansza::plansza(int x, int y) : wymiarXplanszy(x), wymiarYplanszy(y) {}
+Board::Board(int x, int y) : boardWidth(x), boardHeight(y) {}
 
-void plansza::czysc(){
-  std::vector<std::vector<char>> grid2(wymiarYplanszy, std::vector<char>(wymiarXplanszy, WALL));
+void Board::clear(){
+  std::vector<std::vector<char>> grid2(boardHeight, std::vector<char>(boardWidth, WALL));
   grid = grid2;
 }
 
-void plansza::print(){
+void Board::print(){
  std::cout<<"\033[H";
- for(int i = 0; i < wymiarYplanszy; i++){
-    for(int j = 0; j < wymiarXplanszy; j++){
+ for(int i = 0; i < boardHeight; i++){
+    for(int j = 0; j < boardWidth; j++){
         if(grid[i][j] == '.'){
           std::cout<<"\033[46m"<<"  "<<"\033[0m";
         }
-        else if(grid[i][j] == plansza::ROUTE){
+        else if(grid[i][j] == Board::ROUTE){
           std::cout<<"\033[42m"<<"  "<<"\033[0m";
         }
-        else if(grid[i][j] == plansza::WALL){
+        else if(grid[i][j] == Board::WALL){
           std::cout<<"\033[48;2;160;160;160m"<<"  "<<"\033[0m";
         }
         else{
@@ -29,29 +29,29 @@ void plansza::print(){
  }
 }
 
-bool plansza::setCell(int x, int y, char znak){
-  if(x > 0 && x < wymiarXplanszy - 1 && y > 0 && y < wymiarYplanszy - 1){
-    grid[y][x] = znak;
+bool Board::setCell(int x, int y, char symbol){
+  if(x > 0 && x < boardWidth - 1 && y > 0 && y < boardHeight - 1){
+    grid[y][x] = symbol;
     return true;
   }
  return false;
 }
 
-bool plansza::isValid(int x, int y){
-return (x > 0 && x < wymiarXplanszy - 1 && y > 0 && y < wymiarYplanszy - 1);
+bool Board::isValid(int x, int y){
+return (x > 0 && x < boardWidth - 1 && y > 0 && y < boardHeight - 1);
 }
 
-char plansza::getCell(int x, int y){
- if(x >= 0 && x < wymiarXplanszy && y >= 0 && y < wymiarYplanszy){
+char Board::getCell(int x, int y){
+ if(x >= 0 && x < boardWidth && y >= 0 && y < boardHeight){
     return grid[y][x];
  }
 return WALL;
 }
 
-int plansza::getWys(){
-return wymiarYplanszy;
+int Board::getHeight(){
+return boardHeight;
 }
 
-int plansza::getSzer(){
-return wymiarXplanszy;
+int Board::getWidth(){
+return boardWidth;
 }

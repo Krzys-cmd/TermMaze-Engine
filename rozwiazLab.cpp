@@ -6,44 +6,44 @@
 #include <thread>
 #include <chrono>
 
-RozwiazLab::RozwiazLab(plansza& b) : board(b) {}
+SolveLab::SolveLab(Board& b) : board(b) {}
 
-bool RozwiazLab::solve(punkt start, punkt koniec){
-    int  wys = board.getWys();
-    int szer = board.getSzer();
+bool SolveLab::solve(Point start, Point end){
+    int height = board.getHeight();
+    int width = board.getWidth();
 
-    std::queue<punkt> q;
-    std::vector<std::vector<bool>> odwiedzone(wys, std::vector<bool>(szer, false));
+    std::queue<Point> q;
+    std::vector<std::vector<bool>> visited(height, std::vector<bool>(width, false));
 
-    std::vector<std::vector<punkt>> rodzic(wys, std::vector<punkt>(szer, {-1,-1}));
+    std::vector<std::vector<Point>> parent(height, std::vector<Point>(width, {-1,-1}));
 
     q.push(start);
-    odwiedzone[start.y][start.x] = true;
+    visited[start.y][start.x] = true;
     board.setCell(start.x,start.y,'.');
 
     int dx[] = {1,-1,0,0};
     int dy[] = {0,0,1,-1};
 
-    bool znaleziony = false;
+    bool found = false;
 
     while(!q.empty()){
-        punkt obecny = q.front();
+        Point current = q.front();
         q.pop();
 
-        if(obecny.x == koniec.x && obecny.y == koniec.y){
-            znaleziony = true;
+        if(current.x == end.x && current.y == end.y){
+            found = true;
             break;
         }
         for(int i = 0; i < 4; i++){
-            int nx = obecny.x + dx[i];
-            int ny = obecny.y + dy[i];
+            int nx = current.x + dx[i];
+            int ny = current.y + dy[i];
 
-            if(board.isValid(nx,ny) && board.getCell(nx,ny) == plansza::PATH && !odwiedzone[ny][nx]){
-                odwiedzone[ny][nx] = true;
-                rodzic[ny][nx] = obecny;
+            if(board.isValid(nx,ny) && board.getCell(nx,ny) == Board::PATH && !visited[ny][nx]){
+                visited[ny][nx] = true;
+                parent[ny][nx] = current;
                 q.push({nx,ny});
 
-                if(!(nx == koniec.x && ny == koniec.y)){
+                if(!(nx == end.x && ny == end.y)){
                     board.setCell(nx,ny,'.');
                 }
 
@@ -53,26 +53,25 @@ bool RozwiazLab::solve(punkt start, punkt koniec){
         std::this_thread::sleep_for(std::chrono::milliseconds(15));
 
     }
-    for(int i = 0; i < wys; i++){
-        for(int j = 0; j < szer; j++){
+    for(int i = 0; i < height; i++){
+        for(int j = 0; j < width; j++){
             if(board.getCell(j,i) == '.'){
-                board.setCell(j,i,plansza::PATH);
+                board.setCell(j,i,Board::PATH);
             }
         }
     }
-    if(znaleziony){
-        punkt teraz = koniec;
+    if(found){
+        Point current = end;
 
-        while(!(teraz.x == start.x && teraz.y == start.y)){
-            board.setCell(teraz.x,teraz.y,plansza::ROUTE);
-            teraz = rodzic[teraz.y][teraz.x];
+        while(!(current.x == start.x && current.y == start.y)){
+            board.setCell(current.x,current.y,Board::ROUTE);
+            current = parent[current.y][current.x];
 
             board.print();
             std::this_thread::sleep_for(std::chrono::milliseconds(30));
         }
-        board.setCell(start.x,start.y,plansza::ROUTE);
+        board.setCell(start.x,start.y,Board::ROUTE);
         board.print();
     }
-    return znaleziony;
+    return found;
 }
-
