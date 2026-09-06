@@ -1,5 +1,5 @@
 #pragma once
-#include "plansza.h"
+#include "Board.h"
 //#include <vector>
 
 class GenerateLab{
