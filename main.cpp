@@ -2,9 +2,9 @@
 #include <thread>
 #include <chrono>
 
-#include "plansza.h"
-#include "generujLab.h"
-#include "rozwiazLab.h"
+#include "Board.h"
+#include "GenerateLab.h"
+#include "SolveLab.h"
 
 int main()
 {
