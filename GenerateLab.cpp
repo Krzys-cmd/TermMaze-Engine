@@ -1,4 +1,4 @@
-#include "generujLab.h"
+#include "GenerateLab.h"
 #include <stack>
 #include <chrono>
 #include <thread>
